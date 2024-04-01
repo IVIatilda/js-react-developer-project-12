@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MessagesList } from "../../components/messagesList";
 import { Channels } from "../../components/channels";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChannels } from "../../slices/channelsSlice.js";
-import { fetchMessages } from "../../slices/messagesSlice.js";
+import { fetchChannels, channelsSelectors } from "../../slices/channelsSlice";
+import { fetchMessages } from "../../slices/messagesSlice";
 import { MessagesForm } from "../../components/messagesForm";
 import { AddChannelModal } from "../../components/addChannelModal";
 import { Channel } from "../../api/dto";
@@ -12,6 +12,12 @@ import { Channel } from "../../api/dto";
 export const MainPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const channels: Channel[] = useSelector(
+        channelsSelectors.selectAll
+    ) as Channel[];
+
+    const [modalShow, setModalShow] = React.useState(false);
+    const [selectedChannel, setSelectedChannel] = React.useState(null);
 
     useEffect(() => {
         dispatch(fetchChannels());
@@ -25,14 +31,11 @@ export const MainPage = () => {
         }
     }, [navigate]);
 
-    const channels: Channel[] = useSelector((state: any) =>
-        Object.values(state.channels.entities)
-    );
-
-    const [modalShow, setModalShow] = React.useState(false);
-    const [selectedChannel, setSelectedChannel] = React.useState(
-        channels[0] || null
-    );
+    useEffect(() => {
+        if (channels && channels.length) {
+            setSelectedChannel(channels[0]);
+        }
+    }, [channels]);
 
     return (
         <>

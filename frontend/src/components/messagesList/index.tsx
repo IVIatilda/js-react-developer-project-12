@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Channel, Message } from "../../api/dto";
 import { useSelector } from "react-redux";
+import { messagesSelectors } from "../../slices/messagesSlice";
 
 export const MessagesList = ({
     selectedChannel,
 }: {
     selectedChannel: Channel;
 }) => {
-    const messages: Message[] = useSelector((state: any) =>
-        Object.values(state.messages.entities as Message).filter(
+    const messages: Message[] = useSelector(
+        messagesSelectors.selectAll
+    ) as Message[];
+
+    const selectedMessages = useMemo(() =>
+        messages.filter(
             (message: Message) => message.channelId === selectedChannel.id
-        )
+        ), [messages, selectedChannel]
     );
-    console.log(messages);
+
+    // const messages: Message[] = useSelector((state: any) =>
+    //     Object.values(state.messages.entities as Message).filter(
+    //         (message: Message) => message.channelId === selectedChannel.id
+    //     )
+    // );
+    console.log('selectedMessages', selectedMessages);
 
     return (
         <>
@@ -20,13 +31,13 @@ export const MessagesList = ({
                 <p className="m-0">
                     <b># {selectedChannel?.name}</b>
                 </p>
-                <span className="text-muted">{messages.length} сообщения</span>
+                <span className="text-muted">{selectedMessages.length} сообщения</span>
             </div>
             <div
                 id="messages-box"
                 className="chat-messages overflow-auto px-5 "
             >
-                {messages.map((message: Message) => (
+                {selectedMessages.map((message: Message) => (
                     <div className="text-break mb-2">
                         <b>{message.username}</b>: {message.body}
                     </div>

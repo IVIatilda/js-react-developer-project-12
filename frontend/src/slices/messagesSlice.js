@@ -3,17 +3,12 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "../api/httpClient";
 
 export const fetchMessages = createAsyncThunk(
     "messages/fetchMessages",
     async () => {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("/api/v1/messages", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await httpClient.get("/messages");
         return response.data;
     }
 );
@@ -21,15 +16,15 @@ export const fetchMessages = createAsyncThunk(
 export const addMessage = createAsyncThunk(
     "messages/addMessage",
     async (message) => {
-        const { data } = await axios.post("/api/v1/messages", message);
+        const { data } = await httpClient.post("/messages", message);
         return data;
     }
 );
 
 export const editMessage = createAsyncThunk(
     "messages/editMessage",
-    async (id, message) => {
-        const { data } = await axios.patch("/api/v1/messages" + id, message);
+    async ({ id, message }) => {
+        const { data } = await httpClient.patch("/messages/${id}", message);
         return data;
     }
 );
@@ -37,7 +32,7 @@ export const editMessage = createAsyncThunk(
 export const removeMessage = createAsyncThunk(
     "messages/removeMessage",
     async (id) => {
-        const { data } = await axios.delete("/api/v1/messages" + id);
+        const { data } = await httpClient.delete(`/messages/${id}`);
         return data;
     }
 );
@@ -60,3 +55,4 @@ const messagesSlice = createSlice({
 
 export const { actions } = messagesSlice;
 export default messagesSlice.reducer;
+export const messagesSelectors = messagesAdapter.getSelectors((state) => state.messages);

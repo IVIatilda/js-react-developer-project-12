@@ -3,17 +3,12 @@ import {
     createEntityAdapter,
     createSlice,
 } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "../api/httpClient";
 
 export const fetchChannels = createAsyncThunk(
     "channels/fetchChannels",
     async () => {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("/api/v1/channels", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await httpClient.get("/channels");
         return response.data;
     }
 );
@@ -21,15 +16,15 @@ export const fetchChannels = createAsyncThunk(
 export const addChannel = createAsyncThunk(
     "channels/addChannel",
     async (channel) => {
-        const { data } = await axios.post("/api/v1/channels", channel);
+        const { data } = await httpClient.post("/channels", channel);
         return data;
     }
 );
 
 export const editChannel = createAsyncThunk(
     "channels/editChannel",
-    async (id, channel) => {
-        const { data } = await axios.patch("/api/v1/channels" + id, channel);
+    async ({ id, channel }) => {
+        const { data } = await httpClient.patch(`/channels/${id}`, channel);
         return data;
     }
 );
@@ -37,7 +32,7 @@ export const editChannel = createAsyncThunk(
 export const removeChannel = createAsyncThunk(
     "channels/removeChannel",
     async (id) => {
-        const { data } = await axios.delete("/api/v1/channels" + id);
+        const { data } = await httpClient.delete(`/channels/${id}`);
         return data;
     }
 );
@@ -58,12 +53,11 @@ const channelsSlice = createSlice({
     },
 });
 
-// export const selectors = channelsSlice.getSelectors((state: any) => state.channels);
-// export const channelsSelectors = channelsAdapter.getSelectors<RootState>(
-//     (state) => state.channels
-//   );
-
-// export default channelsSlice.reducer;
-
 export const { actions } = channelsSlice;
 export default channelsSlice.reducer;
+export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channels);
+
+// export const {
+//     selectAll: selectAllChannels,
+//     selectById: selectChannelById
+// } = channelsAdapter.getSelectors(state => state.channels);
