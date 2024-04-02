@@ -1,19 +1,54 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../slices/messagesSlice";
+import { useFormik } from "formik";
+import { Button, Form } from "react-bootstrap";
+import { Channel } from "../../api/dto";
 
-export const MessagesForm = () => {
+export const MessagesForm = ({
+    selectedChannel,
+}: {
+    selectedChannel: Channel;
+}) => {
+    const dispatch = useDispatch();
+    const userName = localStorage.getItem("username");
+
+    const submitForm = (data: { body: string }) => {
+        if (!data.body) {
+            return;
+        }
+        const message = {
+            body: data.body,
+            channelId: selectedChannel.id,
+            username: userName,
+        };
+        console.log(message);
+        dispatch(addMessage(message));
+        formik.resetForm();
+    };
+
+    const formik = useFormik({
+        initialValues: {
+            body: "",
+        },
+        onSubmit: submitForm,
+    });
     return (
-        <form className="py-1 border rounded-2">
+        <Form className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
             <div className="input-group has-validation">
-                <input
-                    name="body"
-                    aria-label="Новое сообщение"
+                <Form.Control
+                    type="text"
                     placeholder="Введите сообщение..."
+                    onChange={formik.handleChange}
+                    value={formik.values.body}
+                    name="body"
+                    required
                     className="border-0 p-0 ps-2 form-control"
-                    value=""
+                    aria-label="Новое сообщение"
                 />
-                <button
+                <Button
+                    variant=""
                     type="submit"
-                    disabled
                     className="btn btn-group-vertical"
                 >
                     <svg
@@ -29,8 +64,8 @@ export const MessagesForm = () => {
                         ></path>
                     </svg>
                     <span className="visually-hidden">Отправить</span>
-                </button>
+                </Button>
             </div>
-        </form>
+        </Form>
     );
 };

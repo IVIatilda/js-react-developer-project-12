@@ -16,6 +16,7 @@ export const fetchMessages = createAsyncThunk(
 export const addMessage = createAsyncThunk(
     "messages/addMessage",
     async (message) => {
+        console.log('messages/addMessage', message);
         const { data } = await httpClient.post("/messages", message);
         return data;
     }
@@ -43,7 +44,12 @@ const initialState = messagesAdapter.getInitialState();
 const messagesSlice = createSlice({
     name: "messages",
     initialState,
-    reducers: {},
+    reducers: {
+        addMessage(state, { payload }) {
+            console.log('addMessage', payload);
+            messagesAdapter.addOne(state, payload)
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchMessages.fulfilled, messagesAdapter.addMany)

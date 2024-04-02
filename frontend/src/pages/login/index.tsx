@@ -25,6 +25,7 @@ export const LoginPage = () => {
             .then((response) => {
                 setErrorForm(false);
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("username", response.data.username);
                 dispatch(usersActions.setUserInfo(response.data));
                 navigate("/");
             })

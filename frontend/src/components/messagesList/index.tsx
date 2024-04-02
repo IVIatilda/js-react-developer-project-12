@@ -14,7 +14,7 @@ export const MessagesList = ({
 
     const selectedMessages = useMemo(() =>
         messages.filter(
-            (message: Message) => message.channelId === selectedChannel.id
+            (message: Message) => message.channelId === selectedChannel?.id
         ), [messages, selectedChannel]
     );
 
@@ -23,7 +23,7 @@ export const MessagesList = ({
     //         (message: Message) => message.channelId === selectedChannel.id
     //     )
     // );
-    console.log('selectedMessages', selectedMessages);
+    console.log('messages', messages);
 
     return (
         <>
