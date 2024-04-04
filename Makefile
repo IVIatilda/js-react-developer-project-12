@@ -1,7 +1,10 @@
 install:
-	npm ci
+	npm install; npm install --prefix frontend
 
 start-frontend:
+	npm run start --prefix frontend
+
+start-old-frontend:
 	make -C frontend start
 
 start-backend:
@@ -10,8 +13,11 @@ start-backend:
 deploy:
 	git push heroku main
 
-start:
+old-start:
 	make start-backend & make start-frontend
+
+start:
+	npm run start
 
 build:
 	npm run build
