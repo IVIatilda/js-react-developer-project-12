@@ -34,6 +34,7 @@ export const ChannelBtn = ({
                         variant={selectedChannel === channel.id && "secondary"}
                         className="w-100 rounded-0 text-start"
                         onClick={selectChat}
+                        type="button"
                     >
                         <span className="me-1">#</span>
                         {channel.name}
@@ -67,6 +68,7 @@ export const ChannelBtn = ({
                     variant={selectedChannel === channel.id && "secondary"}
                     className="w-100 rounded-0 text-start"
                     onClick={selectChat}
+                    type="button"
                 >
                     <span className="me-1">#</span>
                     {channel.name}
