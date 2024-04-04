@@ -1,5 +1,9 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { addChannel, removeChannel } from "./channelsSlice.js";
+import {
+    addChannel,
+    removeChannel,
+    actions as channelActions,
+} from "./channelsSlice.js";
 
 const initialState = {
     selectedChannel: "1",
@@ -23,6 +27,9 @@ const uiSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(removeChannel.fulfilled, (state, action) => {
+                state.selectedChannel = state.defaultChannel;
+            })
+            .addCase(channelActions.removeChannel, (state, action) => {
                 state.selectedChannel = state.defaultChannel;
             })
             .addCase(addChannel.fulfilled, (state, action) => {
