@@ -42,7 +42,11 @@ export const ChannelBtn = ({
                         as={Button}
                         variant={selectedChannel === channel.id && "secondary"}
                         className="rounded-right"
-                    ></Dropdown.Toggle>
+                    >
+                        <span className="visually-hidden">
+                            {t("channels.channels")}
+                        </span>
+                    </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item
                             onClick={() => {
