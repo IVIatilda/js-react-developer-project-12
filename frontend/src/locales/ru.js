@@ -27,7 +27,7 @@ const ru = {
             username: "От 3 до 20 символов",
             password: "Не менее 6 символов",
             repeatPassword: "Пароли не совпадают",
-            userIsset: "Такой пользователь уже существует",
+            userIsset: "Такой пользователь уже существует",
             serverError: "Произошла ошибка на сервере",
             wrongUsernameOrPassword: "Неверные имя пользователя или пароль",
             channelNameLength: "От 3 до 20 символов",
