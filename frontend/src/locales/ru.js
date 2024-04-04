@@ -37,9 +37,9 @@ const ru = {
             noAccount: "Нет аккаунта?",
             sure: "Уверены?",
             message: {
-              count_one: '{{count}} сообщение',
-              count_few: '{{count}} сообщения',
-              count_many: '{{count}} сообщений',
+                count_one: "{{count}} сообщение",
+                count_few: "{{count}} сообщения",
+                count_many: "{{count}} сообщений",
             },
         },
         channels: {
@@ -48,6 +48,9 @@ const ru = {
             addChannel: "Добавить канал",
             renameChannel: "Переименовать канал",
             deleteChannel: "Удалить канал",
+            created: "Канал создан",
+            edited: "Канал переименован",
+            deleted: "Канал удален",
         },
     },
 };

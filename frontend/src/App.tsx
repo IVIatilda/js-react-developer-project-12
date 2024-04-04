@@ -11,6 +11,7 @@ import { SignupPage } from "./pages/signup";
 import { actions as usersActions } from "./slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { ToastContainer } from "react-toastify";
 
 function App() {
     const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function App() {
                     </Routes>
                 </BrowserRouter>
             </div>
+            <ToastContainer />
         </div>
     );
 }

@@ -29,8 +29,10 @@ export const LoginPage = () => {
                 dispatch(usersActions.userLogin(response.data));
                 navigate("/");
             })
-            .catch(() => {
-                setErrorForm(true);
+            .catch((error) => {
+                if (error.request.status === 401) {
+                    setErrorForm(true);
+                }
             });
     };
     const formik = useFormik({

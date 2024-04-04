@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Channel, Message } from "../../api/dto";
+import { Message } from "../../api/dto";
 import { useSelector } from "react-redux";
 import { messagesSelectors } from "../../slices/messagesSlice";
 import { useTranslation } from "react-i18next";

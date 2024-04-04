@@ -24,14 +24,6 @@ export const MainPage = () => {
         channelsSelectors.selectAll
     ) as Channel[];
 
-    const [modalShow, setModalShow] = useState(false);
-    const [channelForRename, setChannelForRename] = useState(null);
-
-    useEffect(() => {
-        dispatch(fetchChannels());
-        dispatch(fetchMessages());
-    }, [dispatch]);
-
     const isAuth = useSelector((state: any) => state.user.token);
 
     useEffect(() => {
@@ -40,6 +32,16 @@ export const MainPage = () => {
             navigate("/login");
         }
     }, [navigate, isAuth]);
+
+    const [modalShow, setModalShow] = useState(false);
+    const [channelForRename, setChannelForRename] = useState(null);
+
+    useEffect(() => {
+        if (isAuth) {
+            dispatch(fetchChannels());
+            dispatch(fetchMessages());
+        }
+    }, [dispatch, isAuth]);
 
     const socket = io({
         transports: ["websocket", "polling"],

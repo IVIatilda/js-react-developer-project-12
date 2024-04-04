@@ -1,10 +1,12 @@
-import axios from "axios";
 import { UserLoginDto } from "./dto";
+import httpClient from "./httpClient";
 
-export const userLogin = (data: UserLoginDto) => {
-    return axios.post("/api/v1/login", data);
+export const userLogin = async (data: UserLoginDto) => {
+    const res = await httpClient.post("login", data);
+    return res;
 };
 
-export const userSignup = (data: UserLoginDto) => {
-    return axios.post("/api/v1/signup", data);
+export const userSignup = async (data: UserLoginDto) => {
+    const res = await httpClient.post("/signup", data);
+    return res;
 };

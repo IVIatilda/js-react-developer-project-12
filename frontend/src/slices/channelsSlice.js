@@ -4,6 +4,8 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import httpClient from "../api/httpClient";
+import { toast } from "react-toastify";
+import i18next from "i18next";
 
 export const fetchChannels = createAsyncThunk(
     "channels/fetchChannels",
@@ -17,6 +19,9 @@ export const addChannel = createAsyncThunk(
     "channels/addChannel",
     async (channel) => {
         const { data } = await httpClient.post("/channels", channel);
+        if (data) {
+            toast.success(i18next.t("channels.created"));
+        }
         return data;
     }
 );
@@ -28,6 +33,9 @@ export const editChannel = createAsyncThunk(
             `/channels/${channel.id}`,
             channel
         );
+        if (data) {
+            toast.success(i18next.t("channels.edited"));
+        }
         return { id: channel.id, changes: data };
     }
 );
@@ -35,7 +43,10 @@ export const editChannel = createAsyncThunk(
 export const removeChannel = createAsyncThunk(
     "channels/removeChannel",
     async (id) => {
-        await httpClient.delete(`/channels/${id}`);
+        const { data } = await httpClient.delete(`/channels/${id}`);
+        if (data) {
+            toast.success(i18next.t("channels.deleted"));
+        }
         return id;
     }
 );
@@ -55,7 +66,7 @@ const channelsSlice = createSlice({
         builder
             .addCase(fetchChannels.fulfilled, channelsAdapter.addMany)
             .addCase(addChannel.fulfilled, channelsAdapter.addOne)
-            .addCase(editChannel.fulfilled, channelsAdapter.removeOne)
+            .addCase(editChannel.fulfilled, channelsAdapter.updateOne)
             .addCase(removeChannel.fulfilled, channelsAdapter.removeOne);
     },
 });
