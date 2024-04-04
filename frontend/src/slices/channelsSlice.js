@@ -23,17 +23,20 @@ export const addChannel = createAsyncThunk(
 
 export const editChannel = createAsyncThunk(
     "channels/editChannel",
-    async ({ id, channel }) => {
-        const { data } = await httpClient.patch(`/channels/${id}`, channel);
-        return data;
+    async (channel) => {
+        const { data } = await httpClient.patch(
+            `/channels/${channel.id}`,
+            channel
+        );
+        return { id: channel.id, changes: data };
     }
 );
 
 export const removeChannel = createAsyncThunk(
     "channels/removeChannel",
     async (id) => {
-        const { data } = await httpClient.delete(`/channels/${id}`);
-        return data;
+        await httpClient.delete(`/channels/${id}`);
+        return id;
     }
 );
 
@@ -43,21 +46,21 @@ const initialState = channelsAdapter.getInitialState();
 const channelsSlice = createSlice({
     name: "channels",
     initialState,
-    reducers: {},
+    reducers: {
+        // removeChannel: channelsAdapter.removeOne,
+        updateChannel: channelsAdapter.updateOne,
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchChannels.fulfilled, channelsAdapter.addMany)
             .addCase(addChannel.fulfilled, channelsAdapter.addOne)
-            .addCase(editChannel.fulfilled, channelsAdapter.updateOne)
+            .addCase(editChannel.fulfilled, channelsAdapter.removeOne)
             .addCase(removeChannel.fulfilled, channelsAdapter.removeOne);
     },
 });
 
 export const { actions } = channelsSlice;
 export default channelsSlice.reducer;
-export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channels);
-
-// export const {
-//     selectAll: selectAllChannels,
-//     selectById: selectChannelById
-// } = channelsAdapter.getSelectors(state => state.channels);
+export const channelsSelectors = channelsAdapter.getSelectors(
+    (state) => state.channels
+);

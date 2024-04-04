@@ -1,36 +1,120 @@
-import React from "react";
-import { Button, Modal } from "react-bootstrap";
+import { useFormik } from "formik";
+import React, { useEffect } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import {
+    addChannel,
+    editChannel,
+    channelsSelectors,
+} from "../../slices/channelsSlice";
+import { Channel } from "../../api/dto";
+
+const SignupSchema = Yup.object().shape({
+    name: Yup.string()
+        .trim()
+        .min(3, "От 3 до 20 символов")
+        .max(20, "От 3 до 20 символов")
+        .required("Обязательное поле"),
+});
 
 export const AddChannelModal = ({
     show,
+    channel = null,
     onHide,
 }: {
     show: boolean;
+    channel?: Channel;
     onHide: () => void;
 }) => {
+    const dispatch = useDispatch();
+    const textInput: any = React.createRef();
+
+    const channels: Channel[] = useSelector(
+        channelsSelectors.selectAll
+    ) as Channel[];
+
+    const submitForm = (data: { name: string }) => {
+        const newChannel = { name: data.name.trim() };
+        const channelIsset = channels.find(
+            (channel) => channel.name === newChannel.name
+        );
+        if (channelIsset) {
+            formik.setErrors({ name: "Должно быть уникальным" });
+            return;
+        }
+        if (channel) {
+            dispatch(editChannel({ ...channel, ...newChannel }));
+        } else {
+            dispatch(addChannel(newChannel));
+        }
+        onHide();
+    };
+
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+        },
+        validationSchema: SignupSchema,
+        onSubmit: submitForm,
+    });
+
+    useEffect(() => {
+        formik.resetForm();
+        formik.setValues({ name: channel ? channel.name : "" });
+        textInput.current?.select();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [channel?.name, show]);
+
     return (
         <Modal
             show={show}
-            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header closeButton onClick={onHide}>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить канал
+                    {channel ? "Переименовать канал" : "Добавить канал"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4>Centered Modal</h4>
-                <p>
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo
-                    odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                    risus, porta ac consectetur ac, vestibulum at eros.
-                </p>
+                <Form onSubmit={formik.handleSubmit}>
+                    <Form.Group className="input-group has-validation">
+                        <Form.Label className="visually-hidden" htmlFor="name">
+                            Имя канала
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.name}
+                            name="name"
+                            isInvalid={
+                                !!formik.errors.name && formik.touched.name
+                            }
+                            className="w-100 mb-2"
+                            aria-label="Новое сообщение"
+                            ref={textInput}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {formik.errors.name && formik.touched.name ? (
+                                <div>{formik.errors.name}</div>
+                            ) : null}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <div className="d-flex justify-content-end">
+                        <Button
+                            variant="secondary"
+                            className="me-2 btn"
+                            onClick={onHide}
+                        >
+                            Отменить
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Отправить
+                        </Button>
+                    </div>
+                </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={onHide}>Close</Button>
-            </Modal.Footer>
         </Modal>
     );
 };

@@ -3,27 +3,23 @@ import { Channel, Message } from "../../api/dto";
 import { useSelector } from "react-redux";
 import { messagesSelectors } from "../../slices/messagesSlice";
 
-export const MessagesList = ({
-    selectedChannel,
-}: {
-    selectedChannel: Channel;
-}) => {
+export const MessagesList = () => {
     const messages: Message[] = useSelector(
         messagesSelectors.selectAll
     ) as Message[];
 
-    const selectedMessages = useMemo(() =>
-        messages.filter(
-            (message: Message) => message.channelId === selectedChannel?.id
-        ), [messages, selectedChannel]
-    );
+    const selectedChannel = useSelector((state: any) => {
+        const channel = state.channels.entities[state.ui.selectedChannel];
+        return channel;
+    });
 
-    // const messages: Message[] = useSelector((state: any) =>
-    //     Object.values(state.messages.entities as Message).filter(
-    //         (message: Message) => message.channelId === selectedChannel.id
-    //     )
-    // );
-    console.log('messages', messages);
+    const selectedMessages = useMemo(
+        () =>
+            messages.filter(
+                (message: Message) => message.channelId === selectedChannel?.id
+            ),
+        [messages, selectedChannel]
+    );
 
     return (
         <>
@@ -31,14 +27,16 @@ export const MessagesList = ({
                 <p className="m-0">
                     <b># {selectedChannel?.name}</b>
                 </p>
-                <span className="text-muted">{selectedMessages.length} сообщения</span>
+                <span className="text-muted">
+                    {selectedMessages.length} сообщения
+                </span>
             </div>
             <div
                 id="messages-box"
                 className="chat-messages overflow-auto px-5 "
             >
                 {selectedMessages.map((message: Message) => (
-                    <div className="text-break mb-2">
+                    <div key={message.id} className="text-break mb-2">
                         <b>{message.username}</b>: {message.body}
                     </div>
                 ))}

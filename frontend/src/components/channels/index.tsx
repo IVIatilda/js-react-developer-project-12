@@ -1,18 +1,14 @@
 import React from "react";
-import { ChannelBtn } from "../channelsList";
+import { ChannelBtn } from "../channelBtn";
 import { Channel } from "../../api/dto";
 import { Button, Nav } from "react-bootstrap";
 
 export const Channels = ({
     items,
-    selectedChannel,
-    setSelectedChannel,
-    addChannel,
+    editChannel,
 }: {
     items: Channel[];
-    selectedChannel: Channel;
-    setSelectedChannel: (channel: Channel) => void;
-    addChannel: () => void;
+    editChannel: (channel: Channel | null) => void;
 }) => {
     return (
         <>
@@ -21,7 +17,9 @@ export const Channels = ({
                 <Button
                     variant="link"
                     className="p-0 btn btn-group-vertical"
-                    onClick={addChannel}
+                    onClick={() => {
+                        editChannel(null);
+                    }}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -38,11 +36,11 @@ export const Channels = ({
             <Nav
                 defaultActiveKey="/home"
                 as="ul"
-                className="flex-column px-2 mb-3 overflow-auto"
+                className="flex-column px-2 mb-3 overflow-auto h-100"
             >
                 {items.map((item: Channel) => (
-                    <Nav.Item key={item.id} as="li" onClick={() => setSelectedChannel(item)}>
-                        <ChannelBtn btn={item} selected={selectedChannel?.id} />
+                    <Nav.Item key={item.id} as="li">
+                        <ChannelBtn channel={item} editChannel={editChannel} />
                     </Nav.Item>
                 ))}
             </Nav>

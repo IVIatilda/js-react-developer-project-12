@@ -4,6 +4,7 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import httpClient from "../api/httpClient";
+import { removeChannel } from "./channelsSlice.js";
 
 export const fetchMessages = createAsyncThunk(
     "messages/fetchMessages",
@@ -16,7 +17,7 @@ export const fetchMessages = createAsyncThunk(
 export const addMessage = createAsyncThunk(
     "messages/addMessage",
     async (message) => {
-        console.log('messages/addMessage', message);
+        console.log("messages/addMessage", message);
         const { data } = await httpClient.post("/messages", message);
         return data;
     }
@@ -46,8 +47,8 @@ const messagesSlice = createSlice({
     initialState,
     reducers: {
         addMessage(state, { payload }) {
-            console.log('addMessage', payload);
-            messagesAdapter.addOne(state, payload)
+            console.log("addMessage", payload);
+            messagesAdapter.addOne(state, payload);
         },
     },
     extraReducers: (builder) => {
@@ -55,10 +56,18 @@ const messagesSlice = createSlice({
             .addCase(fetchMessages.fulfilled, messagesAdapter.addMany)
             .addCase(addMessage.fulfilled, messagesAdapter.addOne)
             .addCase(editMessage.fulfilled, messagesAdapter.updateOne)
-            .addCase(removeMessage.fulfilled, messagesAdapter.removeOne);
+            .addCase(removeMessage.fulfilled, messagesAdapter.removeOne)
+            .addCase(removeChannel.fulfilled, (state, action) => {
+                const messages = Object.values(state.entities).filter(
+                    (e) => e.channelId !== action.payload
+                );
+                messagesAdapter.setAll(state, messages);
+            });
     },
 });
 
 export const { actions } = messagesSlice;
 export default messagesSlice.reducer;
-export const messagesSelectors = messagesAdapter.getSelectors((state) => state.messages);
+export const messagesSelectors = messagesAdapter.getSelectors(
+    (state) => state.messages
+);
