@@ -43,9 +43,7 @@ export const ChannelBtn = ({
                         variant={selectedChannel === channel.id && "secondary"}
                         className="rounded-right"
                     >
-                        <span className="visually-hidden">
-                            {t("channels.channels")}
-                        </span>
+                        <span className="visually-hidden">{t("channels.settings")}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item
