@@ -27,35 +27,28 @@ export const MainPage = () => {
     const [modalShow, setModalShow] = useState(false);
     const [channelForRename, setChannelForRename] = useState(null);
 
-    const editChannel = (channel: Channel | null) => {
-        setChannelForRename(channel);
-        setModalShow(true);
-    };
-
     useEffect(() => {
         dispatch(fetchChannels());
         dispatch(fetchMessages());
     }, [dispatch]);
 
+    const isAuth = useSelector((state: any) => state.user.token);
+
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token && !isAuth) {
             navigate("/login");
         }
-    }, [navigate]);
+    }, [navigate, isAuth]);
 
-    // const socket = io();
     const socket = io({
         transports: ["websocket", "polling"],
     });
-
-    const [isConnected, setIsConnected] = useState(socket.connected);
 
     useEffect(() => {
         function onConnect() {
             console.log("connected");
             socket.emit("confirmation");
-            setIsConnected(true);
         }
 
         socket.on("connect", onConnect);
@@ -86,6 +79,11 @@ export const MainPage = () => {
             socket.off("connect", onConnect);
         };
     }, [dispatch, socket]);
+
+    const editChannel = (channel: Channel | null) => {
+        setChannelForRename(channel);
+        setModalShow(true);
+    };
 
     return (
         <>

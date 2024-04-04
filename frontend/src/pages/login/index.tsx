@@ -20,13 +20,11 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const [errorForm, setErrorForm] = React.useState(false);
 
-    const submitForm = (setSubmitting: UserLoginDto) => {
-        userLogin(setSubmitting)
+    const submitForm = (userInfo: UserLoginDto) => {
+        userLogin(userInfo)
             .then((response) => {
                 setErrorForm(false);
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("username", response.data.username);
-                dispatch(usersActions.setUserInfo(response.data));
+                dispatch(usersActions.userLogin(response.data));
                 navigate("/");
             })
             .catch(() => {

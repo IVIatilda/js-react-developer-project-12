@@ -7,8 +7,20 @@ import { LoginPage } from "./pages/login";
 import { NotFoundPage } from "./pages/404";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import { SignupPage } from "./pages/signup";
+import { actions as usersActions } from "./slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+    const dispatch = useDispatch();
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
+    const isAuth = useSelector((state: any) => state.user.token);
+
+    if (username && token) {
+        dispatch(usersActions.userLogin({ username, token }));
+    }
+
     useEffect(() => {
         const rootElement = document.getElementById("root");
         if (rootElement) {
@@ -21,12 +33,20 @@ function App() {
         };
     }, []);
 
+    const userLogout = () => {
+        dispatch(usersActions.userLogout());
+    };
+
     return (
         <div className="d-flex flex-column h-100">
             <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                 <div className="container justify-content-between">
                     <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
-                    <Button type="submit">Submit</Button>
+                    {isAuth && (
+                        <Button type="button" onClick={userLogout}>
+                            Выйти
+                        </Button>
+                    )}
                 </div>
             </Navbar>
             <div className="d-flex flex-column h-100 bg-body-tertiary">
@@ -34,6 +54,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<MainPage />} />
                         <Route path="login" element={<LoginPage />} />
+                        <Route path="signup" element={<SignupPage />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </BrowserRouter>
@@ -43,25 +64,3 @@ function App() {
 }
 
 export default App;
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-

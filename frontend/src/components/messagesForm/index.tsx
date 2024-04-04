@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../slices/messagesSlice";
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
-import { Channel } from "../../api/dto";
 
 export const MessagesForm = () => {
     const dispatch = useDispatch();
