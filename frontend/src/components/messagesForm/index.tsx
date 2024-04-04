@@ -4,6 +4,7 @@ import { addMessage } from "../../slices/messagesSlice";
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import leoProfanity from "leo-profanity";
 
 export const MessagesForm = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export const MessagesForm = () => {
             return;
         }
         const message = {
-            body: data.body,
+            body: leoProfanity.clean(data.body.trim()),
             channelId: selectedChannel,
             username: userName,
         };

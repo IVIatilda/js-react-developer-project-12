@@ -10,6 +10,7 @@ import {
 } from "../../slices/channelsSlice";
 import { Channel } from "../../api/dto";
 import { useTranslation } from "react-i18next";
+import leoProfanity from 'leo-profanity';
 
 export const AddChannelModal = ({
     show,
@@ -37,7 +38,7 @@ export const AddChannelModal = ({
     ) as Channel[];
 
     const submitForm = (data: { name: string }) => {
-        const newChannel = { name: data.name.trim() };
+        const newChannel = { name: leoProfanity.clean(data.name.trim()) };
         const channelIsset = channels.find(
             (channel) => channel.name === newChannel.name
         );
