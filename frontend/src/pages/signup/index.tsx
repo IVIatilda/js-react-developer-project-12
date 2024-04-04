@@ -5,27 +5,11 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import loginImg from "../../assets/images/registration.jpeg";
-import { UserLoginDto } from "../../api/dto";
 import { userSignup } from "../../api/api";
 import { actions as usersActions } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-
-const SignupSchema = Yup.object().shape({
-    username: Yup.string()
-        .trim()
-        .min(3, "От 3 до 20 символов")
-        .max(20, "От 3 до 20 символов")
-        .required("Обязательное поле"),
-    password: Yup.string()
-        .trim()
-        .min(6, "Не менее 6 символов")
-        .required("Обязательное поле"),
-    repeatPassword: Yup.string()
-        .trim()
-        .required("Обязательное поле")
-        .oneOf([Yup.ref("password"), null], "Пароли не совпадают"),
-});
+import { useTranslation } from "react-i18next";
 
 const initialValues = {
     username: "",
@@ -36,23 +20,38 @@ const initialValues = {
 export const SignupPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const SignupSchema = Yup.object().shape({
+        username: Yup.string()
+            .trim()
+            .min(3, t("errors.username"))
+            .max(20, t("errors.username"))
+            .required(t("errors.required")),
+        password: Yup.string()
+            .trim()
+            .min(6, t("errors.password"))
+            .required(t("errors.required")),
+        repeatPassword: Yup.string()
+            .trim()
+            .required(t("errors.required"))
+            .oneOf([Yup.ref("password"), null], t("errors.repeatPassword")),
+    });
 
     const submitForm = (setSubmitting) => {
         userSignup(setSubmitting)
             .then((response) => {
-                // localStorage.setItem("token", response.data.token);
-                // localStorage.setItem("username", response.data.username);
                 dispatch(usersActions.userLogin(response.data));
                 navigate("/");
             })
             .catch((error) => {
                 if (error.request.status === 409) {
                     formik.setErrors({
-                        username: "Такой пользователь уже существует",
+                        username: t("errors.userIsset"),
                     });
                 } else {
                     formik.setErrors({
-                        username: "Ошибка сервера. Попробуйте позже.",
+                        username: t("errors.serverError"),
                     });
                 }
             });
@@ -78,14 +77,16 @@ export const SignupPage = () => {
                             className="col-12 col-md-6 mt-3 mt-mb-0"
                             onSubmit={formik.handleSubmit}
                         >
-                            <h1 className="text-center mb-4">Регистрация</h1>
+                            <h1 className="text-center mb-4">
+                                {t("headers.register")}
+                            </h1>
                             <FloatingLabel
-                                label="Имя пользователя"
+                                label={t("placeholders.username")}
                                 className="mb-3"
                             >
                                 <Form.Control
                                     type="text"
-                                    placeholder="Имя пользователя"
+                                    placeholder={t("placeholders.username")}
                                     onChange={formik.handleChange}
                                     value={formik.values.username}
                                     name="username"
@@ -103,10 +104,13 @@ export const SignupPage = () => {
                                     ) : null}
                                 </Form.Control.Feedback>
                             </FloatingLabel>
-                            <FloatingLabel label="Пароль" className="mb-4">
+                            <FloatingLabel
+                                label={t("placeholders.password")}
+                                className="mb-4"
+                            >
                                 <Form.Control
                                     type="password"
-                                    placeholder="Пароль"
+                                    placeholder={t("placeholders.password")}
                                     onChange={formik.handleChange}
                                     value={formik.values.password}
                                     isInvalid={
@@ -125,12 +129,12 @@ export const SignupPage = () => {
                                 </Form.Control.Feedback>
                             </FloatingLabel>
                             <FloatingLabel
-                                label="Подтвердите пароль"
+                                label={t("placeholders.repeatPassword")}
                                 className="mb-4"
                             >
                                 <Form.Control
                                     type="password"
-                                    placeholder="Подтвердите пароль"
+                                    placeholder={t("placeholders.repeatPassword")}
                                     onChange={formik.handleChange}
                                     value={formik.values.repeatPassword}
                                     isInvalid={
@@ -153,7 +157,7 @@ export const SignupPage = () => {
                                     variant="w-100 mb-3 btn btn-outline-primary"
                                     type="submit"
                                 >
-                                    Зарегистрироваться
+                                    {t("buttons.register")}
                                 </Button>
                             </div>
                         </Form>

@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import { DeleteChannelModal } from "../deleteChannelModal";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as uiActions } from "../../slices/uiSlice";
+import { useTranslation } from "react-i18next";
 
 export const ChannelBtn = ({
     channel,
@@ -15,6 +16,7 @@ export const ChannelBtn = ({
 }) => {
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const selectedChannel = useSelector(
         (state: any) => state.ui.selectedChannel
@@ -47,14 +49,14 @@ export const ChannelBtn = ({
                                 setShowDeleteModal(true);
                             }}
                         >
-                            Удалить
+                            {t("buttons.delete")}
                         </Dropdown.Item>
                         <Dropdown.Item
                             onClick={() => {
                                 editChannel(channel);
                             }}
                         >
-                            Переименовать
+                            {t("buttons.rename")}
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>

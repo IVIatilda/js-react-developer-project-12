@@ -5,12 +5,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./slices/index";
+import i18next from './i18next';
+import { I18nextProvider } from 'react-i18next';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <App />
+            <I18nextProvider i18n={i18next}>
+                <App />{" "}
+            </I18nextProvider>
         </Provider>
     </React.StrictMode>
 );

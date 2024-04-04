@@ -9,6 +9,7 @@ import { UserLoginDto } from "../../api/dto";
 import { userLogin } from "../../api/api";
 import { actions as usersActions } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const initialValues: UserLoginDto = {
     username: "",
@@ -18,6 +19,7 @@ const initialValues: UserLoginDto = {
 export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [errorForm, setErrorForm] = React.useState(false);
 
     const submitForm = (userInfo: UserLoginDto) => {
@@ -51,11 +53,16 @@ export const LoginPage = () => {
                             className="col-12 col-md-6 mt-3 mt-mb-0"
                             onSubmit={formik.handleSubmit}
                         >
-                            <h1 className="text-center mb-4">Войти</h1>
-                            <FloatingLabel label="Ваш ник" className="mb-3">
+                            <h1 className="text-center mb-4">
+                                {t("headers.login")}
+                            </h1>
+                            <FloatingLabel
+                                label={t("placeholders.nickname")}
+                                className="mb-3"
+                            >
                                 <Form.Control
                                     type="text"
-                                    placeholder="Ваш ник"
+                                    placeholder={t("placeholders.nickname")}
                                     onChange={formik.handleChange}
                                     value={formik.values.username}
                                     name="username"
@@ -63,10 +70,13 @@ export const LoginPage = () => {
                                     isInvalid={errorForm}
                                 />
                             </FloatingLabel>
-                            <FloatingLabel label="Пароль" className="mb-4">
+                            <FloatingLabel
+                                label={t("placeholders.password")}
+                                className="mb-4"
+                            >
                                 <Form.Control
                                     type="password"
-                                    placeholder="Пароль"
+                                    placeholder={t("placeholders.password")}
                                     onChange={formik.handleChange}
                                     value={formik.values.password}
                                     required
@@ -74,7 +84,7 @@ export const LoginPage = () => {
                                     isInvalid={errorForm}
                                 />
                                 <Form.Control.Feedback type="invalid" tooltip>
-                                    Неверные имя пользователя или пароль
+                                    {t("errors.wrongUsernameOrPassword")}
                                 </Form.Control.Feedback>
                             </FloatingLabel>
                             <div className="d-grid gap-2">
@@ -82,15 +92,15 @@ export const LoginPage = () => {
                                     variant="w-100 mb-3 btn btn-outline-primary"
                                     type="submit"
                                 >
-                                    Войти
+                                    {t("buttons.login")}
                                 </Button>
                             </div>
                         </Form>
                     </div>
                     <div className="card-footer p-4">
                         <div className="text-center">
-                            <span>Нет аккаунта?</span>{" "}
-                            <a href="/signup">Регистрация</a>
+                            <span>{t("texts.noAccount")}</span>{" "}
+                            <a href="/signup">{t("headers.register")}</a>
                         </div>
                     </div>
                 </div>

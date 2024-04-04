@@ -10,9 +10,11 @@ import Button from "react-bootstrap/Button";
 import { SignupPage } from "./pages/signup";
 import { actions as usersActions } from "./slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function App() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
     const isAuth = useSelector((state: any) => state.user.token);
@@ -44,7 +46,7 @@ function App() {
                     <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
                     {isAuth && (
                         <Button type="button" onClick={userLogout}>
-                            Выйти
+                            {t("buttons.logout")}
                         </Button>
                     )}
                 </div>
@@ -64,3 +66,4 @@ function App() {
 }
 
 export default App;
+

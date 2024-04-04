@@ -2,8 +2,10 @@ import React, { useMemo } from "react";
 import { Channel, Message } from "../../api/dto";
 import { useSelector } from "react-redux";
 import { messagesSelectors } from "../../slices/messagesSlice";
+import { useTranslation } from "react-i18next";
 
 export const MessagesList = () => {
+    const { t } = useTranslation();
     const messages: Message[] = useSelector(
         messagesSelectors.selectAll
     ) as Message[];
@@ -28,7 +30,9 @@ export const MessagesList = () => {
                     <b># {selectedChannel?.name}</b>
                 </p>
                 <span className="text-muted">
-                    {selectedMessages.length} сообщения
+                    {t("texts.message.count", {
+                        count: selectedMessages.length,
+                    })}
                 </span>
             </div>
             <div

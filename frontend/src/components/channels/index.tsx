@@ -2,6 +2,7 @@ import React from "react";
 import { ChannelBtn } from "../channelBtn";
 import { Channel } from "../../api/dto";
 import { Button, Nav } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 export const Channels = ({
     items,
@@ -10,10 +11,11 @@ export const Channels = ({
     items: Channel[];
     editChannel: (channel: Channel | null) => void;
 }) => {
+    const { t } = useTranslation();
     return (
         <>
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                <b>Каналы</b>
+                <b>{t("channels.channels")}</b>
                 <Button
                     variant="link"
                     className="p-0 btn btn-group-vertical"

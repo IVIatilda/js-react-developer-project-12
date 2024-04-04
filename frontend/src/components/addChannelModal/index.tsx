@@ -9,14 +9,7 @@ import {
     channelsSelectors,
 } from "../../slices/channelsSlice";
 import { Channel } from "../../api/dto";
-
-const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-        .trim()
-        .min(3, "От 3 до 20 символов")
-        .max(20, "От 3 до 20 символов")
-        .required("Обязательное поле"),
-});
+import { useTranslation } from "react-i18next";
 
 export const AddChannelModal = ({
     show,
@@ -29,6 +22,15 @@ export const AddChannelModal = ({
 }) => {
     const dispatch = useDispatch();
     const textInput: any = React.createRef();
+    const { t } = useTranslation();
+
+    const SignupSchema = Yup.object().shape({
+        name: Yup.string()
+            .trim()
+            .min(3, t("errors.channelNameLength"))
+            .max(20, t("errors.channelNameLength"))
+            .required(t("errors.required")),
+    });
 
     const channels: Channel[] = useSelector(
         channelsSelectors.selectAll
@@ -40,7 +42,7 @@ export const AddChannelModal = ({
             (channel) => channel.name === newChannel.name
         );
         if (channelIsset) {
-            formik.setErrors({ name: "Должно быть уникальным" });
+            formik.setErrors({ name: t("errors.channelNameUnique") });
             return;
         }
         if (channel) {
@@ -74,14 +76,16 @@ export const AddChannelModal = ({
         >
             <Modal.Header closeButton onClick={onHide}>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {channel ? "Переименовать канал" : "Добавить канал"}
+                    {channel
+                        ? t("channels.renameChannel")
+                        : t("channels.addChannel")}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={formik.handleSubmit}>
                     <Form.Group className="input-group has-validation">
                         <Form.Label className="visually-hidden" htmlFor="name">
-                            Имя канала
+                            {t("channels.channelName")}
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -92,7 +96,7 @@ export const AddChannelModal = ({
                                 !!formik.errors.name && formik.touched.name
                             }
                             className="w-100 mb-2"
-                            aria-label="Новое сообщение"
+                            aria-label={t("channels.channelName")}
                             ref={textInput}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -107,10 +111,10 @@ export const AddChannelModal = ({
                             className="me-2 btn"
                             onClick={onHide}
                         >
-                            Отменить
+                            {t("buttons.cancel")}
                         </Button>
                         <Button variant="primary" type="submit">
-                            Отправить
+                            {t("buttons.send")}
                         </Button>
                     </div>
                 </Form>
