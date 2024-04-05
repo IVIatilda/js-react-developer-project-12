@@ -85,9 +85,6 @@ export const AddChannelModal = ({
             <Modal.Body>
                 <Form onSubmit={formik.handleSubmit}>
                     <Form.Group className="input-group has-validation">
-                        <Form.Label className="visually-hidden" htmlFor="name">
-                            {t("channels.channelName")}
-                        </Form.Label>
                         <Form.Control
                             type="text"
                             onChange={formik.handleChange}
@@ -100,6 +97,9 @@ export const AddChannelModal = ({
                             aria-label={t("channels.channelName")}
                             ref={textInput}
                         />
+                        <Form.Label className="visually-hidden" htmlFor="name">
+                            {t("channels.channelName")}
+                        </Form.Label>
                         <Form.Control.Feedback type="invalid">
                             {formik.errors.name && formik.touched.name ? (
                                 <div>{formik.errors.name}</div>
