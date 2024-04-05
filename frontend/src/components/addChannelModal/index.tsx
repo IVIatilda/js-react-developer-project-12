@@ -10,7 +10,7 @@ import {
 } from "../../slices/channelsSlice";
 import { Channel } from "../../api/dto";
 import { useTranslation } from "react-i18next";
-import leoProfanity from 'leo-profanity';
+import leoProfanity from "leo-profanity";
 
 export const AddChannelModal = ({
     show,
@@ -84,7 +84,10 @@ export const AddChannelModal = ({
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={formik.handleSubmit}>
-                    <Form.Group className="input-group has-validation">
+                    <Form.Group
+                        className="input-group has-validation"
+                        controlId="channelName"
+                    >
                         <Form.Control
                             type="text"
                             onChange={formik.handleChange}
@@ -96,7 +99,6 @@ export const AddChannelModal = ({
                             className="w-100 mb-2"
                             aria-label={t("channels.channelName")}
                             ref={textInput}
-                            placeholder={t("channels.channelName")}
                         />
                         <Form.Label className="visually-hidden" htmlFor="name">
                             {t("channels.channelName")}
