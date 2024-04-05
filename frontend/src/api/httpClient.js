@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { handleAuthError } from "../shared/auth";
 
 const httpClient = axios.create({
     baseURL: "/api/v1",
@@ -26,6 +27,10 @@ httpClient.interceptors.response.use(
             case 404:
                 message = "Ресурс не найден";
                 break;
+            case 401:
+                handleAuthError();
+                break;
+
             default:
                 message = "";
         }

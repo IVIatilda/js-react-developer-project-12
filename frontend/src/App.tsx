@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { MainPage } from "./pages/main";
 import { LoginPage } from "./pages/login";
 import { NotFoundPage } from "./pages/404";
@@ -22,6 +22,7 @@ const rollbarConfig = {
 function App() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
     const isAuth = useSelector((state: any) => state.user.token);

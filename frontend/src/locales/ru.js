@@ -26,7 +26,7 @@ const ru = {
             required: "Обязательное поле",
             username: "От 3 до 20 символов",
             password: "Не менее 6 символов",
-            repeatPassword: "Пароли не совпадают",
+            repeatPassword: "Пароли должны совпадать",
             userIsset: "Такой пользователь уже существует",
             serverError: "Произошла ошибка на сервере",
             wrongUsernameOrPassword: "Неверные имя пользователя или пароль",
