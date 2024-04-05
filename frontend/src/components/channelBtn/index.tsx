@@ -32,7 +32,7 @@ export const ChannelBtn = ({
                 <Dropdown className="d-flex btn-group">
                     <Button
                         variant={selectedChannel === channel.id && "secondary"}
-                        className="w-100 rounded-0 text-start"
+                        className="w-100 rounded-0 text-start text-truncate"
                         onClick={selectChat}
                         type="button"
                     >
