@@ -96,6 +96,7 @@ export const AddChannelModal = ({
                             className="w-100 mb-2"
                             aria-label={t("channels.channelName")}
                             ref={textInput}
+                            placeholder={t("channels.channelName")}
                         />
                         <Form.Label className="visually-hidden" htmlFor="name">
                             {t("channels.channelName")}
