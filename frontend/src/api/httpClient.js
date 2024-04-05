@@ -29,7 +29,6 @@ httpClient.interceptors.response.use(
             default:
                 message = "";
         }
-        console.log(message);
         if (message) {
             toast.error(message);
         }

@@ -83,6 +83,7 @@ export const SignupPage = () => {
                             <FloatingLabel
                                 label={t("placeholders.username")}
                                 className="mb-3"
+                                controlId="usernameField"
                             >
                                 <Form.Control
                                     type="text"
@@ -107,6 +108,7 @@ export const SignupPage = () => {
                             <FloatingLabel
                                 label={t("placeholders.password")}
                                 className="mb-4"
+                                controlId="passwordField"
                             >
                                 <Form.Control
                                     type="password"
@@ -131,10 +133,13 @@ export const SignupPage = () => {
                             <FloatingLabel
                                 label={t("placeholders.repeatPassword")}
                                 className="mb-4"
+                                controlId="repeatPasswordField"
                             >
                                 <Form.Control
                                     type="password"
-                                    placeholder={t("placeholders.repeatPassword")}
+                                    placeholder={t(
+                                        "placeholders.repeatPassword"
+                                    )}
                                     onChange={formik.handleChange}
                                     value={formik.values.repeatPassword}
                                     isInvalid={
