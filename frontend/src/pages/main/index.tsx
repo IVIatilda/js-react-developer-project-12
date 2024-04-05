@@ -16,7 +16,7 @@ import { MessagesForm } from "../../components/messagesForm";
 import { AddChannelModal } from "../../components/addChannelModal";
 import { Channel } from "../../api/dto";
 import { io } from "socket.io-client";
-import { setAuthErrorHandler, handleAuthError } from "../../shared/auth";
+import { setAuthErrorHandler } from "../../shared/auth";
 
 export const MainPage = () => {
     const navigate = useNavigate();
@@ -25,18 +25,18 @@ export const MainPage = () => {
         channelsSelectors.selectAll
     ) as Channel[];
 
+    useEffect(() => {
+        setAuthErrorHandler(() => navigate("/login"));
+    }, [navigate]);
+
     const isAuth = useSelector((state: any) => state.user.token);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token && !isAuth) {
-            handleAuthError();
+            navigate("/login");
         }
     }, [navigate, isAuth]);
-
-    useEffect(() => {
-        setAuthErrorHandler(() => navigate("/login"));
-    }, [navigate]);
 
     const [modalShow, setModalShow] = useState(false);
     const [channelForRename, setChannelForRename] = useState(null);
