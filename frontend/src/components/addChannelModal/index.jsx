@@ -3,22 +3,13 @@ import React, { useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { addChannel, editChannel, channelsSelectors } from '../../slices/channelsSlice';
-import { Channel } from '../../api/dto';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
+import { addChannel, editChannel, channelsSelectors } from '../../slices/channelsSlice';
 
-export const AddChannelModal = ({
-  show,
-  channel = null,
-  onHide,
-}: {
-  show: boolean;
-  channel?: Channel;
-  onHide: () => void;
-}) => {
+const AddChannelModal = ({ show, channel = null, onHide }) => {
   const dispatch = useDispatch();
-  const textInput: any = React.createRef();
+  const textInput = React.createRef();
   const { t } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
@@ -29,12 +20,13 @@ export const AddChannelModal = ({
       .required(t('errors.required')),
   });
 
-  const channels: Channel[] = useSelector(channelsSelectors.selectAll) as Channel[];
+  const channels = useSelector(channelsSelectors.selectAll);
 
-  const submitForm = (data: { name: string }) => {
+  const submitForm = (data) => {
     const newChannel = { name: leoProfanity.clean(data.name.trim()) };
-    const channelIsset = channels.find((channel) => channel.name === newChannel.name);
+    const channelIsset = channels.find((item) => item.name === newChannel.name);
     if (channelIsset) {
+      // eslint-disable-next-line no-use-before-define
       formik.setErrors({ name: t('errors.channelNameUnique') });
       return;
     }
@@ -102,3 +94,5 @@ export const AddChannelModal = ({
     </Modal>
   );
 };
+
+export default AddChannelModal;

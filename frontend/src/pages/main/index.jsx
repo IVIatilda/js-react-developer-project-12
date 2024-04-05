@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessagesList } from '../../components/messagesList';
-import { Channels } from '../../components/channels';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChannels, channelsSelectors, actions as channelsActions } from '../../slices/channelsSlice';
-import { fetchMessages, actions as messagesActions } from '../../slices/messagesSlice';
-import { MessagesForm } from '../../components/messagesForm';
-import { AddChannelModal } from '../../components/addChannelModal';
-import { Channel } from '../../api/dto';
 import { io } from 'socket.io-client';
+import MessagesList from '../../components/messagesList';
+import Channels from '../../components/channels';
+import {
+  fetchChannels,
+  channelsSelectors,
+  actions as channelsActions,
+} from '../../slices/channelsSlice';
+import { fetchMessages, actions as messagesActions } from '../../slices/messagesSlice';
+import MessagesForm from '../../components/messagesForm';
+import AddChannelModal from '../../components/addChannelModal';
 
-export const MainPage = () => {
+const MainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const channels: Channel[] = useSelector(channelsSelectors.selectAll) as Channel[];
+  const channels = useSelector(channelsSelectors.selectAll);
 
-  const isAuth = useSelector((state: any) => state.user.token);
+  const isAuth = useSelector((state) => state.user.token);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -73,7 +76,7 @@ export const MainPage = () => {
     };
   }, [dispatch, socket]);
 
-  const editChannel = (channel: Channel | null) => {
+  const editChannel = (channel) => {
     setChannelForRename(channel);
     setModalShow(true);
   };
@@ -95,7 +98,13 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
-      <AddChannelModal show={modalShow} channel={channelForRename} onHide={() => setModalShow(false)} />
+      <AddChannelModal
+        show={modalShow}
+        channel={channelForRename}
+        onHide={() => setModalShow(false)}
+      />
     </>
   );
 };
+
+export default MainPage;

@@ -1,20 +1,19 @@
 import React, { useMemo } from 'react';
-import { Message } from '../../api/dto';
 import { useSelector } from 'react-redux';
-import { messagesSelectors } from '../../slices/messagesSlice';
 import { useTranslation } from 'react-i18next';
+import { messagesSelectors } from '../../slices/messagesSlice';
 
-export const MessagesList = () => {
+const MessagesList = () => {
   const { t } = useTranslation();
-  const messages: Message[] = useSelector(messagesSelectors.selectAll) as Message[];
+  const messages = useSelector(messagesSelectors.selectAll);
 
-  const selectedChannel = useSelector((state: any) => {
+  const selectedChannel = useSelector((state) => {
     const channel = state.channels.entities[state.ui.selectedChannel];
     return channel;
   });
 
   const selectedMessages = useMemo(
-    () => messages.filter((message: Message) => message.channelId === selectedChannel?.id),
+    () => messages.filter((message) => message.channelId === selectedChannel?.id),
     [messages, selectedChannel],
   );
 
@@ -22,7 +21,11 @@ export const MessagesList = () => {
     <>
       <div className="bg-light mb-4 p-3 shadow-sm small">
         <p className="m-0">
-          <b># {selectedChannel?.name}</b>
+          <b>
+            #
+            {' '}
+            {selectedChannel?.name}
+          </b>
         </p>
         <span className="text-muted">
           {t('texts.message.count', {
@@ -31,12 +34,17 @@ export const MessagesList = () => {
         </span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-        {selectedMessages.map((message: Message) => (
+        {selectedMessages.map((message) => (
           <div key={message.id} className="text-break mb-2">
-            <b>{message.username}</b>: {message.body}
+            <b>{message.username}</b>
+            :
+            {' '}
+            {message.body}
           </div>
         ))}
       </div>
     </>
   );
 };
+
+export default MessagesList;

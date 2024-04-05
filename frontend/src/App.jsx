@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import { MainPage } from './pages/main';
-import { LoginPage } from './pages/login';
-import { NotFoundPage } from './pages/404';
-import { SignupPage } from './pages/signup';
+import MainPage from './pages/main';
+import LoginPage from './pages/login';
+import NotFoundPage from './pages/404';
+import SignupPage from './pages/signup';
 import { actions as usersActions } from './slices/userSlice';
 import rollbarConfig from './shared/constants';
 

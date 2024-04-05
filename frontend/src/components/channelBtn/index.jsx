@@ -1,24 +1,17 @@
 import React from 'react';
-import { Channel } from '../../api/dto';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Button } from 'react-bootstrap';
-import { DeleteChannelModal } from '../deleteChannelModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions as uiActions } from '../../slices/uiSlice';
 import { useTranslation } from 'react-i18next';
+import DeleteChannelModal from '../deleteChannelModal';
+import { actions as uiActions } from '../../slices/uiSlice';
 
-export const ChannelBtn = ({
-  channel,
-  editChannel,
-}: {
-  channel: Channel;
-  editChannel: (channel: Channel | null) => void;
-}) => {
+const ChannelBtn = ({ channel, editChannel }) => {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const selectedChannel = useSelector((state: any) => state.ui.selectedChannel);
+  const selectedChannel = useSelector((state) => state.ui.selectedChannel);
 
   const selectChat = () => {
     dispatch(uiActions.setSelectedChannel(channel.id));
@@ -82,3 +75,5 @@ export const ChannelBtn = ({
     </>
   );
 };
+
+export default ChannelBtn;

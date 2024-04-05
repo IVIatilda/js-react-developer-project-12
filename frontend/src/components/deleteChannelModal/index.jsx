@@ -1,18 +1,10 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { removeChannel, actions as channelsActions } from '../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
+import { removeChannel, actions as channelsActions } from '../../slices/channelsSlice';
 
-export const DeleteChannelModal = ({
-  show,
-  channelId,
-  onHide,
-}: {
-  show: boolean;
-  channelId: string;
-  onHide: () => void;
-}) => {
+const DeleteChannelModal = ({ show, channelId, onHide }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -41,3 +33,5 @@ export const DeleteChannelModal = ({
     </Modal>
   );
 };
+
+export default DeleteChannelModal;

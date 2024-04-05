@@ -8,6 +8,6 @@
     },
     "exclude": [
         "node_modules",
-        "src/declarations.d.ts"    
+        "src/declarations.d.js"    
     ]
 }

@@ -4,12 +4,12 @@ import { useFormik } from 'formik';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import loginImg from '../../assets/images/registration.jpeg';
-import { userSignup } from '../../api/api';
-import { actions as usersActions } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import loginImg from '../../assets/images/registration.jpeg';
+import { userSignup } from '../../api/api';
+import { actions as usersActions } from '../../slices/userSlice';
 
 const initialValues = {
   username: '',
@@ -17,7 +17,7 @@ const initialValues = {
   repeatPassword: '',
 };
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -43,10 +43,12 @@ export const SignupPage = () => {
       })
       .catch((error) => {
         if (error.request.status === 409) {
+          // eslint-disable-next-line no-use-before-define
           formik.setErrors({
             username: t('errors.userIsset'),
           });
         } else {
+          // eslint-disable-next-line no-use-before-define
           formik.setErrors({
             username: t('errors.serverError'),
           });
@@ -68,7 +70,11 @@ export const SignupPage = () => {
             </div>
             <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
               <h1 className="text-center mb-4">{t('headers.register')}</h1>
-              <FloatingLabel label={t('placeholders.username')} className="mb-3" controlId="usernameField">
+              <FloatingLabel
+                label={t('placeholders.username')}
+                className="mb-3"
+                controlId="usernameField"
+              >
                 <Form.Control
                   type="text"
                   placeholder={t('placeholders.username')}
@@ -83,7 +89,11 @@ export const SignupPage = () => {
                   ) : null}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <FloatingLabel label={t('placeholders.password')} className="mb-4" controlId="passwordField">
+              <FloatingLabel
+                label={t('placeholders.password')}
+                className="mb-4"
+                controlId="passwordField"
+              >
                 <Form.Control
                   type="password"
                   placeholder={t('placeholders.password')}
@@ -98,7 +108,11 @@ export const SignupPage = () => {
                   ) : null}
                 </Form.Control.Feedback>
               </FloatingLabel>
-              <FloatingLabel label={t('placeholders.repeatPassword')} className="mb-4" controlId="repeatPasswordField">
+              <FloatingLabel
+                label={t('placeholders.repeatPassword')}
+                className="mb-4"
+                controlId="repeatPasswordField"
+              >
                 <Form.Control
                   type="password"
                   placeholder={t('placeholders.repeatPassword')}
@@ -125,3 +139,5 @@ export const SignupPage = () => {
     </div>
   );
 };
+
+export default SignupPage;

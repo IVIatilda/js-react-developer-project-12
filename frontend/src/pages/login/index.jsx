@@ -4,25 +4,24 @@ import { useFormik } from 'formik';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import loginImg from '../../assets/images/login.jpeg';
-import { UserLoginDto } from '../../api/dto';
-import { userLogin } from '../../api/api';
-import { actions as usersActions } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import loginImg from '../../assets/images/login.jpeg';
+import { userLogin } from '../../api/api';
+import { actions as usersActions } from '../../slices/userSlice';
 
-const initialValues: UserLoginDto = {
+const initialValues = {
   username: '',
   password: '',
 };
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [errorForm, setErrorForm] = React.useState(false);
 
-  const submitForm = (userInfo: UserLoginDto) => {
+  const submitForm = (userInfo) => {
     userLogin(userInfo)
       .then((response) => {
         setErrorForm(false);
@@ -49,7 +48,11 @@ export const LoginPage = () => {
             </div>
             <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
               <h1 className="text-center mb-4">{t('headers.login')}</h1>
-              <FloatingLabel label={t('placeholders.nickname')} className="mb-3" controlId="usernameField">
+              <FloatingLabel
+                label={t('placeholders.nickname')}
+                className="mb-3"
+                controlId="usernameField"
+              >
                 <Form.Control
                   type="text"
                   placeholder={t('placeholders.nickname')}
@@ -60,7 +63,11 @@ export const LoginPage = () => {
                   isInvalid={errorForm}
                 />
               </FloatingLabel>
-              <FloatingLabel label={t('placeholders.password')} className="mb-4" controlId="passwordField">
+              <FloatingLabel
+                label={t('placeholders.password')}
+                className="mb-4"
+                controlId="passwordField"
+              >
                 <Form.Control
                   type="password"
                   placeholder={t('placeholders.password')}
@@ -83,7 +90,9 @@ export const LoginPage = () => {
           </div>
           <div className="card-footer p-4">
             <div className="text-center">
-              <span>{t('texts.noAccount')}</span> <a href="/signup">{t('headers.register')}</a>
+              <span>{t('texts.noAccount')}</span>
+              {' '}
+              <a href="/signup">{t('headers.register')}</a>
             </div>
           </div>
         </div>
@@ -91,3 +100,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export default LoginPage;
