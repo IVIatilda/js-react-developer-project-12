@@ -93,6 +93,7 @@ export const AddChannelModal = ({
                             onChange={formik.handleChange}
                             value={formik.values.name}
                             name="name"
+                            id="name"
                             isInvalid={
                                 !!formik.errors.name && formik.touched.name
                             }
