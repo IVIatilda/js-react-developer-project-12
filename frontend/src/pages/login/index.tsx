@@ -61,6 +61,7 @@ export const LoginPage = () => {
                             <FloatingLabel
                                 label={t("placeholders.nickname")}
                                 className="mb-3"
+                                controlId="usernameField"
                             >
                                 <Form.Control
                                     type="text"
@@ -75,6 +76,7 @@ export const LoginPage = () => {
                             <FloatingLabel
                                 label={t("placeholders.password")}
                                 className="mb-4"
+                                controlId="passwordField"
                             >
                                 <Form.Control
                                     type="password"
