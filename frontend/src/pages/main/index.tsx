@@ -9,16 +9,11 @@ import { MessagesForm } from '../../components/messagesForm';
 import { AddChannelModal } from '../../components/addChannelModal';
 import { Channel } from '../../api/dto';
 import { io } from 'socket.io-client';
-import { setAuthErrorHandler } from '../../shared/auth';
 
 export const MainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const channels: Channel[] = useSelector(channelsSelectors.selectAll) as Channel[];
-
-  useEffect(() => {
-    setAuthErrorHandler(() => navigate('/login'));
-  }, [navigate]);
 
   const isAuth = useSelector((state: any) => state.user.token);
 

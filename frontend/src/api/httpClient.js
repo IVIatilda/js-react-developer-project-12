@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { handleAuthError } from '../shared/auth';
 
 function chooseMessage(status) {
   switch (status) {
@@ -8,13 +7,9 @@ function chooseMessage(status) {
       return 'Внутренняя ошибка сервера';
     case 404:
       return 'Ресурс не найден';
-    case 401:
-      handleAuthError();
-      break;
     default:
       return '';
   }
-  return '';
 }
 
 const httpClient = axios.create({
